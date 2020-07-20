@@ -12,6 +12,9 @@ import com.cap.dao.BookDaoI;
 import com.cap.dao.CategoryDaoI;
 import com.cap.entity.BookInfo;
 import com.cap.entity.CategoryInfo;
+import com.cap.exceptions.InvalidCategoryDetails;
+import com.cap.exceptions.InvalidCategoryId;
+import com.cap.exceptions.InvalidNameException;
 import com.cap.model.BookInfoDetails;
 @Service
 @Transactional
@@ -24,11 +27,19 @@ public class BookCategoryService implements BookCategoryServiceI {
 	private CategoryDaoI cat_dao;
 
 	@Override
-	public CategoryInfo addCategory(CategoryInfo cate_info) {
-
+	public CategoryInfo addCategory(CategoryInfo cate_info) throws Exception {
+		if( cate_info.getCategory_Name()!="" && cate_info.getCategory_Id()>0)
 			return cat_dao.save(cate_info);
+		else if(cate_info.getCategory_Name()=="" && cate_info.getCategory_Id()>0)
+			throw new InvalidNameException("Name should not be null");
+		else if(cate_info.getCategory_Id()<=0 && cate_info.getCategory_Name()!="")
+			throw new InvalidCategoryId("Category id should not be 0 or less than 0");	
+		else if(cate_info.getCategory_Id()<=0 && cate_info.getCategory_Name()=="")
+			throw new InvalidCategoryDetails("Id and Name can't be 0 and null");
+		else
+			return null;
 	}
-
+	
 	@Override
 	public BookInfoDetails addBook(BookInfoDetails b_info) {
 		Boolean bool = cat_dao.existsById(b_info.getCategory_Id());

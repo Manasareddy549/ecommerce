@@ -10,7 +10,7 @@ public interface BookCategoryServiceI {
 
 	BookInfoDetails addBook(BookInfoDetails b_info);
 
-	CategoryInfo addCategory(CategoryInfo cate_info);
+	CategoryInfo addCategory(CategoryInfo cate_info) throws Exception;
 
 	List<CategoryInfo> getCategoryNames();
 
