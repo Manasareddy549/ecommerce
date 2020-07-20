@@ -8,7 +8,7 @@ import com.cap.model.BookInfoDetails;
 
 public interface BookCategoryServiceI {
 
-	BookInfoDetails addBook(BookInfoDetails b_info);
+	BookInfoDetails addBook(BookInfoDetails b_info) throws Exception;
 
 	CategoryInfo addCategory(CategoryInfo cate_info) throws Exception;
 
@@ -20,9 +20,9 @@ public interface BookCategoryServiceI {
 
 	BookInfo updateBook(BookInfo b1)  ;
 	
-	void deleteCategory(int id);
+	void deleteCategory(int id) throws Exception;
 
-	void deleteBook(int id);
+	void deleteBook(int id) throws Exception;
 	
 
 }

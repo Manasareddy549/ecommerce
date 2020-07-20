@@ -12,6 +12,8 @@ import com.cap.dao.BookDaoI;
 import com.cap.dao.CategoryDaoI;
 import com.cap.entity.BookInfo;
 import com.cap.entity.CategoryInfo;
+import com.cap.exceptions.InvalidBookDetails;
+import com.cap.exceptions.InvalidBookId;
 import com.cap.exceptions.InvalidCategoryDetails;
 import com.cap.exceptions.InvalidCategoryId;
 import com.cap.exceptions.InvalidNameException;
@@ -41,7 +43,7 @@ public class BookCategoryService implements BookCategoryServiceI {
 	}
 	
 	@Override
-	public BookInfoDetails addBook(BookInfoDetails b_info) {
+	public BookInfoDetails addBook(BookInfoDetails b_info) throws Exception {
 		Boolean bool = cat_dao.existsById(b_info.getCategory_Id());
 		if (bool) {
 				Optional<CategoryInfo> c = cat_dao.findById(b_info.getCategory_Id());
@@ -56,9 +58,19 @@ public class BookCategoryService implements BookCategoryServiceI {
 				book_info.setPublished_Date(b_info.getPublished_Date());
 				book_info.setTitle(b_info.getTitle());
 				book_info = book_dao.save(book_info);
-				return b_info;
+				if( book_info.getTitle()!="" && book_info.getBook_id()>0)
+					return b_info; 
+				//book_dao.save(book_info);
+				else if(book_info.getTitle()=="" &&book_info.getBook_id()>0)
+					throw new InvalidNameException("Name should not be null");
+				else if(book_info.getBook_id()<=0 && book_info.getTitle()!="")
+					throw new InvalidBookId("Book id should not be 0 or less than 0");	
+				else if(book_info.getBook_id()<=0 && book_info.getTitle()=="")
+					throw new InvalidBookDetails("Id and Name can't be 0 and null");
+				else
+					return null;
 			}
-		return null;
+		return b_info;
 		
 	}
 
@@ -85,12 +97,18 @@ public class BookCategoryService implements BookCategoryServiceI {
 	}
 
 	@Override
-	public void deleteCategory(int id) {
+	public void deleteCategory(int id) throws Exception {
+		if(id!=0)
 		cat_dao.deleteById(id);
+		else if(id==0)
+			throw new InvalidCategoryId("Category id should not be 0 or less than 0");
 	}
 
 	@Override
-	public void deleteBook(int id) {
+	public void deleteBook(int id) throws Exception{
+		if(id!=0)
 		book_dao.deleteById(id);
+		else if(id==0)
+			throw new InvalidBookId("Book id should not be 0 or less than 0");
 	}
 }

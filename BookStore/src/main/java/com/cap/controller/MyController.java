@@ -29,7 +29,7 @@ public class MyController {
 	private BookCategoryServiceI book_catg_service;
 	//add book in the webiste
 	@PostMapping("/addbook")
-	public ResponseEntity<String> addBook(@RequestBody BookInfoDetails b_info){
+	public ResponseEntity<String> addBook(@RequestBody BookInfoDetails b_info) throws Exception{
 		BookInfoDetails b = book_catg_service.addBook(b_info);
 		if(b !=null )
 			return new ResponseEntity<>("book was added successfully..!!",HttpStatus.OK);
@@ -93,13 +93,13 @@ public class MyController {
 				
 		//delete Book
 				@DeleteMapping("/delete_book/{id}")
-				public void deleteBook(@PathVariable ("id") int id){
+				public void deleteBook(@PathVariable ("id") int id) throws Exception{
 				book_catg_service.deleteBook(id);
 				
 				}				
 			//delete category
 				@DeleteMapping("/delete_category/{id}")
-				public void deleteCategory(@PathVariable ("id") int id){
+				public void deleteCategory(@PathVariable ("id") int id) throws Exception{
 				book_catg_service.deleteCategory(id);
 				
 				}				
