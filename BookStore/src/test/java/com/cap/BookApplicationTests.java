@@ -1,4 +1,4 @@
-package com.cap.anurag;
+package com.cap;
 import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
